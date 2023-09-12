@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, FlatList, TouchableOpacity  } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
-  const [task, setTask] = useState<string>(''); // añadido tipo aquí también por consistencia
-  const [tasks, setTasks] = useState<string[]>([]);
+  const [task, setTask] = useState<string>('');
+  const [tasks, setTasks] = useState<Array<{ text: string, completed: boolean }>>([]); // Cambio en la estructura
 
   useEffect(() => {
     loadTasks();
@@ -21,12 +21,19 @@ export default function App() {
 
   const addTask = async () => {
     if (task) {
-      const newTasks = [...tasks, task];
+      const newTasks = [...tasks, { text: task, completed: false }]; // Cambio aquí
       setTasks(newTasks);
       setTask('');
       await AsyncStorage.setItem('tasks', JSON.stringify(newTasks));
     }
   };
+
+  const toggleCompleted = (index: number) => { // Función nueva
+    const newTasks = [...tasks];
+    newTasks[index].completed = !newTasks[index].completed;
+    setTasks(newTasks);
+    AsyncStorage.setItem('tasks', JSON.stringify(newTasks));
+  }
 
   const deleteTask = async (index: number) => {
     const newTasks = tasks.filter((_, i) => i !== index);
@@ -49,7 +56,9 @@ export default function App() {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
           <View style={styles.task}>
-            <Text>{item}</Text>
+            <TouchableOpacity onPress={() => toggleCompleted(index)}> 
+              <Text style={item.completed ? styles.completedTask : null}>{item.text}</Text> 
+            </TouchableOpacity>
             <Button title="Delete" onPress={() => deleteTask(index)} />
           </View>
         )}
@@ -83,4 +92,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
   },
+  completedTask: {
+    textDecorationLine: 'line-through',
+    color: 'gray'
+  }
 });
