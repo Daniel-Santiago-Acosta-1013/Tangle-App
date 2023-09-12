@@ -44,22 +44,29 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Todo List</Text>
-      <TextInput
-        value={task}
-        onChangeText={setTask}
-        style={styles.input}
-        placeholder="Enter a task..."
-      />
-      <Button title="Add Task" onPress={addTask} />
+      <View style={styles.inputContainer}>
+        <TextInput
+          value={task}
+          onChangeText={setTask}
+          style={styles.input}
+          placeholder="Enter a task..."
+          placeholderTextColor="#777"
+        />
+        <TouchableOpacity style={styles.addButton} onPress={addTask}>
+          <Text style={styles.addButtonText}>+</Text>
+        </TouchableOpacity>
+      </View>
       <FlatList
         data={tasks}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
           <View style={styles.task}>
-            <TouchableOpacity onPress={() => toggleCompleted(index)}> 
-              <Text style={item.completed ? styles.completedTask : null}>{item.text}</Text> 
+            <TouchableOpacity onPress={() => toggleCompleted(index)} style={styles.taskTextContainer}> 
+              <Text style={item.completed ? styles.completedTask : styles.taskText}>{item.text}</Text> 
             </TouchableOpacity>
-            <Button title="Delete" onPress={() => deleteTask(index)} />
+            <TouchableOpacity style={styles.deleteButton} onPress={() => deleteTask(index)}>
+              <Text style={styles.deleteButtonText}>X</Text>
+            </TouchableOpacity>
           </View>
         )}
       />
@@ -71,29 +78,75 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#343a40',
   },
   title: {
-    fontSize: 24,
-    marginBottom: 10,
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#f8f9fa',
+    marginBottom: 20,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    marginBottom: 20,
   },
   input: {
-    padding: 10,
-    marginBottom: 10,
-    backgroundColor: 'white',
-    borderRadius: 5,
+    flex: 1,
+    padding: 15,
+    fontSize: 18,
+    backgroundColor: '#f8f9fa',
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5,
+  },
+  addButton: {
+    backgroundColor: '#20c997',
+    padding: 15,
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  addButtonText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#f8f9fa'
   },
   task: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'white',
-    padding: 10,
+    backgroundColor: '#f8f9fa',
+    padding: 15,
     borderRadius: 5,
-    marginBottom: 10,
+    marginBottom: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  taskTextContainer: {
+    flex: 1,
+    marginRight: 10,
+  },
+  taskText: {
+    fontSize: 18,
   },
   completedTask: {
+    fontSize: 18,
     textDecorationLine: 'line-through',
-    color: 'gray'
+    color: '#adb5bd'
+  },
+  deleteButton: {
+    backgroundColor: '#e63946',
+    padding: 8,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  deleteButtonText: {
+    color: '#f8f9fa',
+    fontSize: 16,
+    fontWeight: 'bold',
   }
 });
