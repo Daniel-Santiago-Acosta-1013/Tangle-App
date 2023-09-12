@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, FlatList, TouchableOpacity  } from 'react-native';
+import { View, Text, TextInput, FlatList, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './AppStyles';
 
 export default function App() {
   const [task, setTask] = useState<string>('');
-  const [tasks, setTasks] = useState<Array<{ text: string, completed: boolean }>>([]); // Cambio en la estructura
+  const [priority, setPriority] = useState<'high' | 'medium' | 'low'>('medium'); // Nuevo estado
+  const [tasks, setTasks] = useState<Array<{ text: string, completed: boolean, priority: 'high' | 'medium' | 'low' }>>([]); // Cambio en la estructura
 
   useEffect(() => {
     loadTasks();
@@ -22,7 +23,7 @@ export default function App() {
 
   const addTask = async () => {
     if (task) {
-      const newTasks = [...tasks, { text: task, completed: false }]; // Cambio aquí
+      const newTasks = [...tasks, { text: task, completed: false, priority }]; // Incluir prioridad
       setTasks(newTasks);
       setTask('');
       await AsyncStorage.setItem('tasks', JSON.stringify(newTasks));
@@ -45,6 +46,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Todo List</Text>
+
       <View style={styles.inputContainer}>
         <TextInput
           value={task}
@@ -53,17 +55,29 @@ export default function App() {
           placeholder="Enter a task..."
           placeholderTextColor="#777"
         />
+        <View style={styles.prioritySelector}>
+          <TouchableOpacity onPress={() => setPriority('low')} style={[styles.priorityButton, priority === 'low' && styles.activePriority]}>
+            <Text style={styles.priorityButtonText}>Low</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setPriority('medium')} style={[styles.priorityButton, priority === 'medium' && styles.activePriority]}>
+            <Text style={styles.priorityButtonText}>Medium</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setPriority('high')} style={[styles.priorityButton, priority === 'high' && styles.activePriority]}>
+            <Text style={styles.priorityButtonText}>High</Text>
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity style={styles.addButton} onPress={addTask}>
           <Text style={styles.addButtonText}>+</Text>
         </TouchableOpacity>
       </View>
+
       <FlatList
         data={tasks}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
-          <View style={styles.task}>
-            <TouchableOpacity onPress={() => toggleCompleted(index)} style={styles.taskTextContainer}> 
-              <Text style={item.completed ? styles.completedTask : styles.taskText}>{item.text}</Text> 
+          <View style={[styles.task, styles[item.priority as keyof typeof styles]]}>
+            <TouchableOpacity onPress={() => toggleCompleted(index)} style={styles.taskTextContainer}>
+              <Text style={item.completed ? styles.completedTask : styles.taskText}>{item.text}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.deleteButton} onPress={() => deleteTask(index)}>
               <Text style={styles.deleteButtonText}>X</Text>
