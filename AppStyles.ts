@@ -130,6 +130,61 @@ const styles: StylesProps = StyleSheet.create({
     borderColor: "#20c997",
     borderWidth: 2,
   },
+  filterContainer: {
+    flexDirection: "row",
+    marginBottom: 20,
+    justifyContent: "space-between"
+  },
+  filterButton: {
+    flex: 1,
+    padding: 10,
+    alignItems: "center",
+    borderRadius: 5,
+    marginHorizontal: 5,
+    backgroundColor: "#e9ecef",
+  },
+  activeFilter: {
+    backgroundColor: "#20c997",
+  },
+  filterButtonText: {
+    fontSize: 16,
+    color: "#343a40",
+  },
+
+  // Modal Styles
+  modalContainer: {
+    position: "absolute",
+    top: 100,
+    left: 20,
+    right: 20,
+    backgroundColor: "#f8f9fa",
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    zIndex: 1000,
+  },
+  modalButton: {
+    padding: 10,
+    backgroundColor: "#e9ecef",
+    borderRadius: 5,
+    marginBottom: 10,
+    alignItems: "center"
+  },
+  closeModalButton: {
+    padding: 10,
+    backgroundColor: "#e63946",
+    borderRadius: 5,
+    alignItems: "center"
+  },
+  closeModalText: {
+    color: "#f8f9fa",
+    fontSize: 16,
+    fontWeight: "bold",
+  },  
 });
 
 export default styles;
