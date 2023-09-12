@@ -133,7 +133,7 @@ const styles: StylesProps = StyleSheet.create({
   filterContainer: {
     flexDirection: "row",
     marginBottom: 20,
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   filterButton: {
     flex: 1,
@@ -154,7 +154,7 @@ const styles: StylesProps = StyleSheet.create({
   // Modal Styles
   modalContainer: {
     position: "absolute",
-    top: 100,
+    top: "25%",
     left: 20,
     right: 20,
     backgroundColor: "#f8f9fa",
@@ -172,19 +172,38 @@ const styles: StylesProps = StyleSheet.create({
     backgroundColor: "#e9ecef",
     borderRadius: 5,
     marginBottom: 10,
-    alignItems: "center"
+    alignItems: "center",
   },
   closeModalButton: {
     padding: 10,
     backgroundColor: "#e63946",
     borderRadius: 5,
-    alignItems: "center"
+    alignItems: "center",
   },
   closeModalText: {
     color: "#f8f9fa",
     fontSize: 16,
     fontWeight: "bold",
-  },  
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.4)", // Un fondo semitransparente
+    zIndex: 999,
+  },
+  fullScreenButton: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: -1,
+  },
 });
 
 export default styles;
