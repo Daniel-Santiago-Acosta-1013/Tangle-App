@@ -182,6 +182,21 @@ const styles: StylesProps = StyleSheet.create({
     bottom: 0,
     zIndex: -1,
   },
+
+  // Update Styles
+  updateButton: {
+    backgroundColor: "#FFD700",
+    padding: 8,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 10,
+  },
+  updateButtonText: {
+    color: "#343a40",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });
 
 export default styles;

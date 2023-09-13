@@ -8,6 +8,7 @@ export default function App() {
   const [priority, setPriority] = useState<'high' | 'medium' | 'low'>('medium'); // Nuevo estado
   const [tasks, setTasks] = useState<Array<{ text: string, completed: boolean, priority: 'high' | 'medium' | 'low' }>>([]); // Cambio en la estructura
   const [filter, setFilter] = useState<'all' | 'completed' | 'pending' | 'high' | 'medium' | 'low'>('all');
+  const [editingIndex, setEditingIndex] = useState<number | null>(null); // Nuevo estado para el índice de edición
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
 
   useEffect(() => {
@@ -57,6 +58,22 @@ export default function App() {
         return tasks.filter(t => t.priority === filter);
       default:
         return tasks;
+    }
+  };
+
+  const startEditing = (index: number) => {
+    setTask(tasks[index].text);
+    setEditingIndex(index);
+  };
+
+  const updateTask = async () => {
+    if (editingIndex !== null && task) {
+      const newTasks = [...tasks];
+      newTasks[editingIndex].text = task;
+      setTasks(newTasks);
+      setEditingIndex(null);
+      setTask('');
+      await AsyncStorage.setItem('tasks', JSON.stringify(newTasks));
     }
   };
 
@@ -128,15 +145,37 @@ export default function App() {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
           <View style={[styles.task, styles[item.priority as keyof typeof styles]]}>
-            <TouchableOpacity onPress={() => toggleCompleted(index)} style={styles.taskTextContainer}>
-              <Text style={item.completed ? styles.completedTask : styles.taskText}>{item.text}</Text>
+            <TouchableOpacity
+              onPress={() => toggleCompleted(index)}
+              onLongPress={() => startEditing(index)}  // Agregar evento onLongPress
+              style={styles.taskTextContainer}
+            >
+              {editingIndex === index ? (
+                <TextInput
+                  value={task}
+                  onChangeText={setTask}
+                  style={styles.input}
+                  autoFocus
+                />
+              ) : (
+                <Text style={item.completed ? styles.completedTask : styles.taskText}>
+                  {item.text}
+                </Text>
+              )}
             </TouchableOpacity>
-            <TouchableOpacity style={styles.deleteButton} onPress={() => deleteTask(index)}>
-              <Text style={styles.deleteButtonText}>X</Text>
-            </TouchableOpacity>
+            {editingIndex === index ? (
+              <TouchableOpacity style={styles.updateButton} onPress={updateTask}>
+                <Text style={styles.updateButtonText}>Update</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity style={styles.deleteButton} onPress={() => deleteTask(index)}>
+                <Text style={styles.deleteButtonText}>X</Text>
+              </TouchableOpacity>
+            )}
           </View>
         )}
       />
+
     </View>
   );
 }
