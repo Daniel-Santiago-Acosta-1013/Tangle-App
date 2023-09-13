@@ -1,18 +1,40 @@
 import { StyleSheet } from "react-native";
 import StylesProps from "./types/styles.types";
 
+const lightTheme = {
+  backgroundColor: "#f8f9fa",
+  textColor: "#343a40",
+  inputBackgroundColor: "#e9ecef",
+  buttonColor: "#20c997",
+  buttonText: "#f8f9fa",
+};
+
+const darkTheme = {
+  backgroundColor: "#343a40",
+  textColor: "#f8f9fa",
+  inputBackgroundColor: "#495057",
+  buttonColor: "#20c997",
+  buttonText: "#343a40",
+};
+
 const styles: StylesProps = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#343a40",
+    backgroundColor: lightTheme.backgroundColor,
+  },
+  darkContainer: {
+    backgroundColor: darkTheme.backgroundColor,
   },
   title: {
     fontSize: 32,
     fontWeight: "bold",
-    color: "#f8f9fa",
+    color: lightTheme.textColor,
     marginBottom: 20,
     marginTop: 60,
+  },
+  darkText: {
+    color: darkTheme.textColor,
   },
   inputContainer: {
     flexDirection: "row",
@@ -22,9 +44,12 @@ const styles: StylesProps = StyleSheet.create({
     flex: 1,
     padding: 15,
     fontSize: 18,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: lightTheme.inputBackgroundColor,
     borderTopLeftRadius: 5,
     borderBottomLeftRadius: 5,
+  },
+  darkInput: {
+    backgroundColor: darkTheme.inputBackgroundColor,
   },
   addButton: {
     backgroundColor: "#20c997",
@@ -196,6 +221,18 @@ const styles: StylesProps = StyleSheet.create({
     color: "#343a40",
     fontSize: 16,
     fontWeight: "bold",
+  },
+
+  // Theme Toggle
+  themeToggle: {
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: lightTheme.buttonColor,
+    alignSelf: "flex-end",
+    marginBottom: 20,
+  },
+  darkThemeToggle: {
+    backgroundColor: darkTheme.buttonColor,
   },
 });
 

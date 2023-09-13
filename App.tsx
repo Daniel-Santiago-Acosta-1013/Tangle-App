@@ -10,6 +10,7 @@ export default function App() {
   const [filter, setFilter] = useState<'all' | 'completed' | 'pending' | 'high' | 'medium' | 'low'>('all');
   const [editingIndex, setEditingIndex] = useState<number | null>(null); // Nuevo estado para el índice de edición
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
+  const [darkMode, setDarkMode] = useState<boolean>(false);
 
   useEffect(() => {
     loadTasks();
@@ -78,8 +79,12 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Todo List</Text>
+    <View style={[styles.container, darkMode && styles.darkContainer]}>
+      <Text style={[styles.title, darkMode && styles.darkText]}>Todo List</Text>
+
+      <TouchableOpacity onPress={() => setDarkMode(!darkMode)} style={[styles.themeToggle, darkMode && styles.darkThemeToggle]}>
+        <Text style={[darkMode && styles.darkText]}>{darkMode ? "Light Mode" : "Dark Mode"}</Text>
+      </TouchableOpacity>
 
       <View style={styles.inputContainer}>
         <TextInput
