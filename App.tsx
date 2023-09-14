@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, FlatList, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import styles from './AppStyles';
 
 export default function App() {
   const [task, setTask] = useState<string>('');
   const [priority, setPriority] = useState<'high' | 'medium' | 'low'>('medium'); // Nuevo estado
-  const [tasks, setTasks] = useState<Array<{ text: string, completed: boolean, priority: 'high' | 'medium' | 'low' }>>([]); // Cambio en la estructura
+  const [tasks, setTasks] = useState<Array<{ text: string, completed: boolean, priority: 'high' | 'medium' | 'low', expiryDate?: Date }>>([]);
   const [filter, setFilter] = useState<'all' | 'completed' | 'pending' | 'high' | 'medium' | 'low'>('all');
   const [editingIndex, setEditingIndex] = useState<number | null>(null); // Nuevo estado para el índice de edición
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [expiryDate, setExpiryDate] = useState<Date | undefined>();
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   useEffect(() => {
     loadTasks();
@@ -19,7 +22,15 @@ export default function App() {
   const loadTasks = async () => {
     try {
       const savedTasks = await AsyncStorage.getItem('tasks');
-      if (savedTasks) setTasks(JSON.parse(savedTasks));
+      if (savedTasks) {
+        const parsedTasks = JSON.parse(savedTasks);
+        parsedTasks.forEach((task: any) => {
+          if (task.expiryDate) {
+            task.expiryDate = new Date(task.expiryDate);
+          }
+        });
+        setTasks(parsedTasks);
+      }
     } catch (error) {
       console.error("Error loading tasks", error);
     }
@@ -27,9 +38,10 @@ export default function App() {
 
   const addTask = async () => {
     if (task) {
-      const newTasks = [...tasks, { text: task, completed: false, priority }]; // Incluir prioridad
+      const newTasks = [...tasks, { text: task, completed: false, priority, expiryDate }]; // Incluir fecha de vencimiento
       setTasks(newTasks);
       setTask('');
+      setExpiryDate(undefined); // reset expiryDate
       await AsyncStorage.setItem('tasks', JSON.stringify(newTasks));
     }
   };
@@ -94,6 +106,27 @@ export default function App() {
           placeholder="Enter a task..."
           placeholderTextColor="#777"
         />
+
+        {/* Tap this field to trigger the date picker */}
+        <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.dateInput}>
+          <Text style={{ color: expiryDate ? '#000' : '#777' }}>
+            {expiryDate ? expiryDate.toISOString().split('T')[0] : 'YYYY-MM-DD'}
+          </Text>
+        </TouchableOpacity>
+
+        {showDatePicker && (
+          <DateTimePicker
+            value={expiryDate || new Date()}
+            mode="date"
+            onChange={(event, selectedDate) => {
+              setShowDatePicker(false);
+              if (selectedDate) {
+                setExpiryDate(selectedDate);
+              }
+            }}
+          />
+        )}
+
         <View style={styles.prioritySelector}>
           <TouchableOpacity onPress={() => setPriority('low')} style={[styles.priorityButton, priority === 'low' && styles.activePriority]}>
             <Text style={styles.priorityButtonText}>Low</Text>
@@ -152,7 +185,7 @@ export default function App() {
           <View style={[styles.task, styles[item.priority as keyof typeof styles]]}>
             <TouchableOpacity
               onPress={() => toggleCompleted(index)}
-              onLongPress={() => startEditing(index)}  // Agregar evento onLongPress
+              onLongPress={() => startEditing(index)}
               style={styles.taskTextContainer}
             >
               {editingIndex === index ? (
@@ -163,9 +196,16 @@ export default function App() {
                   autoFocus
                 />
               ) : (
-                <Text style={item.completed ? styles.completedTask : styles.taskText}>
-                  {item.text}
-                </Text>
+                <>
+                  <Text style={item.completed ? styles.completedTask : styles.taskText}>
+                    {item.text}
+                  </Text>
+                  {item.expiryDate && (
+                    <Text style={{ color: 'red' }}>
+                      Expires: {item.expiryDate.toDateString()}
+                    </Text>
+                  )}
+                </>
               )}
             </TouchableOpacity>
             {editingIndex === index ? (
@@ -180,6 +220,7 @@ export default function App() {
           </View>
         )}
       />
+
 
     </View>
   );

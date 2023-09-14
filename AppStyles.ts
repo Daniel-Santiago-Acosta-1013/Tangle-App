@@ -234,6 +234,20 @@ const styles: StylesProps = StyleSheet.create({
   darkThemeToggle: {
     backgroundColor: darkTheme.buttonColor,
   },
+
+  // Date Input
+  dateInput: {
+    flex: 1,
+    padding: 15,
+    fontSize: 18,
+    backgroundColor: lightTheme.inputBackgroundColor,
+    marginLeft: 10,
+    borderRadius: 5,
+  },
+  darkDateInput: {
+    backgroundColor: darkTheme.inputBackgroundColor,
+  },
+  
 });
 
 export default styles;
