@@ -37,8 +37,11 @@ const styles: StylesProps = StyleSheet.create({
     color: darkTheme.textColor,
   },
   inputContainer: {
-    flexDirection: "row",
     marginBottom: 20,
+    height: 280,
+  },
+  marginB: {
+    marginBottom: 10,
   },
   input: {
     flex: 1,
@@ -47,9 +50,13 @@ const styles: StylesProps = StyleSheet.create({
     backgroundColor: lightTheme.inputBackgroundColor,
     borderTopLeftRadius: 5,
     borderBottomLeftRadius: 5,
+    borderWidth: 1, // Añadir bordes
+    borderColor: "#aaa",
+    color: lightTheme.textColor, // añadir color de texto para el modo claro
   },
   darkInput: {
     backgroundColor: darkTheme.inputBackgroundColor,
+    color: darkTheme.textColor, // añadir color de texto para el modo oscuro
   },
   addButton: {
     backgroundColor: "#20c997",
@@ -58,6 +65,8 @@ const styles: StylesProps = StyleSheet.create({
     borderBottomRightRadius: 5,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 10,
+    width: "100%",
   },
   addButtonText: {
     fontSize: 24,
@@ -112,7 +121,8 @@ const styles: StylesProps = StyleSheet.create({
     alignItems: "center",
     borderRadius: 5,
     marginHorizontal: 5,
-    backgroundColor: "#e9ecef",
+    borderWidth: 1, // Añadir bordes
+    borderColor: "#aaa",
   },
   activePriority: {
     backgroundColor: "#20c997",
@@ -237,17 +247,19 @@ const styles: StylesProps = StyleSheet.create({
 
   // Date Input
   dateInput: {
-    flex: 1,
-    padding: 15,
-    fontSize: 18,
-    backgroundColor: lightTheme.inputBackgroundColor,
-    marginLeft: 10,
+    padding: 10,
     borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#aaa",
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    margin: 5,
   },
   darkDateInput: {
     backgroundColor: darkTheme.inputBackgroundColor,
   },
-  
 });
 
+export { lightTheme, darkTheme };
 export default styles;

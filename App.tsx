@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, FlatList, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import styles from './AppStyles';
+import styles, { lightTheme, darkTheme } from './AppStyles';
 
 export default function App() {
   const [task, setTask] = useState<string>('');
@@ -102,14 +102,13 @@ export default function App() {
         <TextInput
           value={task}
           onChangeText={setTask}
-          style={styles.input}
+          style={[styles.input, darkMode && styles.darkInput, styles.marginB]}
           placeholder="Enter a task..."
           placeholderTextColor="#777"
         />
 
-        {/* Tap this field to trigger the date picker */}
-        <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.dateInput}>
-          <Text style={{ color: expiryDate ? '#000' : '#777' }}>
+        <TouchableOpacity onPress={() => setShowDatePicker(true)} style={[styles.input, darkMode && styles.darkInput, styles.marginB]}>
+          <Text style={{ color: expiryDate ? (darkMode ? darkTheme.textColor : lightTheme.textColor) : '#777' }}>
             {expiryDate ? expiryDate.toISOString().split('T')[0] : 'YYYY-MM-DD'}
           </Text>
         </TouchableOpacity>
@@ -124,10 +123,11 @@ export default function App() {
                 setExpiryDate(selectedDate);
               }
             }}
+            style={styles.marginB}
           />
         )}
 
-        <View style={styles.prioritySelector}>
+        <View style={[styles.prioritySelector, styles.marginB]}>
           <TouchableOpacity onPress={() => setPriority('low')} style={[styles.priorityButton, priority === 'low' && styles.activePriority]}>
             <Text style={styles.priorityButtonText}>Low</Text>
           </TouchableOpacity>
