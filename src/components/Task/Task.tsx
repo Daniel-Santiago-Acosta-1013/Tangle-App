@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, TextInput } from 'react-native';
-import styles from '../../../AppStyles';
+import styles from '../../styles/AppStyles';
 
 interface TaskProps {
   item: { text: string, completed: boolean, priority: string, expiryDate?: Date };

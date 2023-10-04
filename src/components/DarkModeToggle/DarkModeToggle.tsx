@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
-import styles from '../../../AppStyles';
+import styles from '../../styles/AppStyles';
 
 interface DarkModeToggleProps {
   darkMode: boolean;

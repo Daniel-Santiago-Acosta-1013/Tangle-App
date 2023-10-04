@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import styles from '../../../AppStyles';
+import styles from '../../styles/AppStyles';
 
 interface Props {
   expiryDate: Date | undefined;

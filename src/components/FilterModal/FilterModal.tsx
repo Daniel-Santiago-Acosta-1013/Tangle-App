@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
-import styles from '../../../AppStyles';
+import styles from '../../styles/AppStyles';
 
 type FilterType = 'all' | 'completed' | 'pending' | 'high' | 'medium' | 'low';
 

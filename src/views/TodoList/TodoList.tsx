@@ -1,11 +1,10 @@
-import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput } from 'react-native';
 import DatePicker from '../../components/DatePicker/DatePicker';
 import FilterModal from '../../components/FilterModal/FilterModal';
 import DarkModeToggle from '../../components/DarkModeToggle/DarkModeToggle';
 import PrioritySelector from '../../components/PrioritySelector/PrioritySelector';
 import Task from '../../components/Task/Task';
-import styles from '../../../AppStyles';
+import styles from '../../styles/AppStyles';
 
 type FilterType = 'all' | 'completed' | 'pending' | 'high' | 'medium' | 'low';
 
@@ -35,7 +34,7 @@ interface Props {
 
 const TodoList: React.FC<Props> = (props) => {
   return (
-    <View style={[styles.container]}>
+    <View style={[styles.container, props.darkMode && styles.darkContainer]}>
 
       <DarkModeToggle
         darkMode={props.darkMode}
