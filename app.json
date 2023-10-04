@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-native-TodoListApp",
-    "slug": "react-native-TodoListApp",
+    "name": "Tangle-App",
+    "slug": "Tangle-App",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon-app.png",
